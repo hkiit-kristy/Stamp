@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFC Stamp Collection</title>
+
+    <style>
+
+
+        body{
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+
+        h1{
+            margin-top: 30px;
+        }
+
+        #book{
+            width: 500px;
+            margin: 30px auto;
+        }
+
+        .stamp{
+            width: 80px;
+            height: 80px;
+
+            background-color: lightgray;
+
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+
+            margin: 5px;
+
+            border-radius: 10px;
+
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .collected{
+            background-color: red;
+        }
+
+    </style>
+
+</head>
+<body>
+    
+
+    <h1>My Stamp Collection</h1>
+
+    <h2 id="counter">Collected: 0 / 10</h2>
+    <button onclick="resetStamps()">
+        Reset Progress
+    </button>
+    <div id="book">
+        <div class="stamp">1</div>
+        <div class="stamp">2</div>
+        <div class="stamp">3</div>
+        <div class="stamp">4</div>
+        <div class="stamp">5</div>
+
+        <div class="stamp">6</div>
+        <div class="stamp">7</div>
+        <div class="stamp">8</div>
+        <div class="stamp">9</div>
+        <div class="stamp">10</div>
+    </div>
+    <script>
+
+
+        //取得網址參數
+
+        const params = new URLSearchParams(window.location.search);
+
+        const stampID = parseInt(params.get("stamp"));
+
+        //讀取已收集資料
+
+        let stamps = JSON.parse(
+                localStorage.getItem("stamps")
+            ) || [];
+
+        //新增印章
+
+        if (
+                stampID &&
+                stampID >= 1 &&
+                stampID <= 10 &&
+                !stamps.includes(stampID)
+            )
+            {
+                stamps.push(stampID);
+            }
+
+        //存回手機
+
+        localStorage.setItem(
+            "stamps",
+            JSON.stringify(stamps)
+        );
+
+        console.log(stamps);
+
+        for(let i = 0; i < stamps.length; i++)
+        {
+            document
+                .querySelectorAll(".stamp")[stamps[i] - 1]
+                document
+                .querySelectorAll(".stamp")[stamps[i]-1]
+                .classList.add("collected");
+                    }
+        document.getElementById("counter").innerText =
+        "Collected: " + stamps.length + " / 10";
+        function resetStamps()
+        {
+            if(confirm("Clear all collected stamps?"))
+            {
+                localStorage.removeItem("stamps");
+                location.reload();
+            }
+        }
+
+    </script>
+</body>
+</html>
